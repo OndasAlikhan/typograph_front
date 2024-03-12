@@ -1,52 +1,53 @@
 <template>
-    <div>
-      <div class="title">
-        <h2>Login</h2>
-      </div>
-      <div class="container form">
-        <label for="uname"><b>Username</b></label>
-        <input
-          v-model="user.username"
-          type="text"
-          class="input"
-          placeholder="Enter Username"
-          name="uname"
-          required
-        />
-  
-        <label for="psw"><b>Password</b></label>
-        <input
-          v-model="user.password"
-          type="password"
-          class="input"
-          placeholder="Enter Password"
-          name="psw"
-          required
-        />
-  
-        <button @click.prevent="login" class="button">Login</button>
-      </div>
-    </div>
-  </template>
+  <section class="self-center w-full flex justify-center">
+    <UICard class="w-[450px] h-full">
+      <UICardHeader>
+        <UICardTitle>Sign in</UICardTitle>
+        <UICardDescription
+          >Enter your email and password to sign in</UICardDescription
+        >
+      </UICardHeader>
+      <UICardContent>
+        <form @submit.prevent="login">
+          <div class="grid items-center w-full gap-4 mb-6">
+            <div class="flex flex-col space-y-1.5">
+              <UILabel for="email">Email</UILabel>
+              <UIInput id="email" v-model="user.email" />
+            </div>
+            <div iv class="flex flex-col space-y-1.5">
+              <UILabel for="password">Password</UILabel>
+              <UIInput id="password" v-model="user.password" />
+            </div>
+          </div>
+          <UIBox class="flex flex-col gap-3 items-center">
+            <UIBox class="w-full">
+              <UIButton class="w-full" :loading="signInLoading">
+                Sign in
+              </UIButton>
+            </UIBox>
+            <UIText class="text-sm font-light" type="link">
+              <NuxtLink to="/register">or create an account</NuxtLink>
+            </UIText>
+          </UIBox>
+        </form>
+      </UICardContent>
+    </UICard>
+  </section>
+</template>
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'; // import storeToRefs helper hook from pinia
-import { useAuthStore } from '~/store/auth'; // import the auth store we just created
+import { storeToRefs } from "pinia"; // import storeToRefs helper hook from pinia
+import { useAuthStore } from "~/store/auth"; // import the auth store we just created
 
 const { authenticateUser } = useAuthStore(); // use authenticateUser action from  auth store
 
-const { authenticated } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
+const { signInLoading } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
 
 const user = ref({
-  username: 'alihan@gmail.com', 
-  password: 'qweqweqwe',
+  email: "",
+  password: "",
 });
-const router = useRouter();
 
 const login = async () => {
   await authenticateUser(user.value); // call authenticateUser and pass the user object
-  // redirect to homepage if user is authenticated
-  if (authenticated) {
-    router.push('/');
-  }
 };
 </script>
