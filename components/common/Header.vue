@@ -23,7 +23,7 @@ onMounted(async () => {
     <div class="border-b">
       <div class="flex h-16 items-center px-4 justify-between">
         <UIBox class="flex">
-          TYPOGRAPH
+          <NuxtLink to="/">TYPOGRAPH</NuxtLink>
           <CommonMainNav class="mx-6" />
         </UIBox>
         <div v-if="authenticated" class="ml-auto flex items-center space-x-4">
