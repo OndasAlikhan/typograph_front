@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const UNAUTH_PAGES = ["/login", "/register"]; // accessible for unauthenticated users
   const PRIVATE_PAGES = ["/dashboard"]; // accessible for authenticated users
-  const PUBLIC_PAGES = ["/"]; // accessible for everyone
+  const PUBLIC_PAGES = ["/", "/leaderboard"]; // accessible for everyone
 
   if (token.value && !me.value?.id) {
     await getMe();
