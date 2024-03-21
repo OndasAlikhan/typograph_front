@@ -29,7 +29,7 @@ import { useTypeResultStore } from "~/store/typeResult";
 const { me } = storeToRefs(useAuthStore());
 const { isUnsavedResult } = storeToRefs(useTypeResultStore());
 const { setResult, saveResult } = useTypeResultStore();
-const DEFAULT_WORDS_AMOUNT = 4;
+const DEFAULT_WORDS_AMOUNT = 20;
 
 const text = ref(
   // "When you meet someone better than yourself, turn your thoughts to becoming his equal. When you meet someone not as good as you are, look within and examine your own self.",

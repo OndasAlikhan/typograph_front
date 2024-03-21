@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { SpeedInsights } from "@vercel/speed-insights/nuxt";
+</script>
 <template>
   <div>
     <UIToaster />
@@ -9,6 +11,7 @@
     <footer class="footer px-4">
       <h1>Made with 🍔</h1>
     </footer>
+    <SpeedInsights />
   </div>
 </template>
 <style lang="scss" scoped>
