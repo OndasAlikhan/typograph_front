@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <MainTypeResult v-if="result.wpm" />
-    <MainTextTyper v-else />
+  <div class="w-full">
+    <div class="mx-auto w-fit">
+      <MainTypeResult v-if="result.wpm" />
+      <MainTextTyper v-else />
+    </div>
   </div>
 </template>
 <script lang="ts" setup>

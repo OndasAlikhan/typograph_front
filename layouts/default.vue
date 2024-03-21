@@ -7,7 +7,7 @@
       <slot />
     </main>
     <footer class="footer px-4">
-      <h1>Made with 🍕</h1>
+      <h1>Made with 🍔</h1>
     </footer>
   </div>
 </template>

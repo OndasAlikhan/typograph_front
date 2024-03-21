@@ -13,19 +13,19 @@
           <div class="grid items-center w-full gap-4 mb-6">
             <div class="flex flex-col space-y-1.5">
               <UILabel for="email">Email</UILabel>
-              <UIInput id="email" />
+              <UIInput id="email" v-model="user.email" />
             </div>
             <div class="flex flex-col space-y-1.5">
               <UILabel for="name">Name</UILabel>
-              <UIInput id="name" />
+              <UIInput id="name" v-model="user.name" />
             </div>
             <div iv class="flex flex-col space-y-1.5">
               <UILabel for="password">Password</UILabel>
-              <UIInput id="password" />
+              <UIInput id="password" v-model="user.password" />
             </div>
             <div iv class="flex flex-col space-y-1.5">
               <UILabel for="repeat_password">Repeat password</UILabel>
-              <UIInput id="repeat_password" />
+              <UIInput id="repeat_password" v-model="user.password_repeat" />
             </div>
           </div>
           <UIBox class="flex flex-col gap-3 items-center">
@@ -45,18 +45,18 @@
 import { storeToRefs } from "pinia"; // import storeToRefs helper hook from pinia
 import { useAuthStore } from "~/store/auth"; // import the auth store we just created
 
-const { authenticateUser } = useAuthStore(); // use authenticateUser action from  auth store
+const { registerUser } = useAuthStore(); // use authenticateUser action from  auth store
 
 const { authenticated } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
 
 const user = ref({
-  email: "alihan@gmail.com",
+  email: "",
   name: "",
-  password: "qweqweqwe",
-  repeatPassword: "qweqweqwe",
+  password: "",
+  password_repeat: "",
 });
 
 const register = async () => {
-  await authenticateUser(user.value); // call authenticateUser and pass the user object
+  await registerUser(user.value); // call authenticateUser and pass the user object
 };
 </script>

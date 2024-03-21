@@ -6,6 +6,7 @@
         :text="parsedText"
         :input-model="inputModel"
         :word-index="currentWord"
+        :is-timer-started="isTimerStarted"
       />
       <input
         ref="inputRef"
@@ -21,13 +22,18 @@
 
 <script lang="ts" setup>
 import { generateWords } from "~/lib/genWord";
+import Timer from "~/lib/timer";
+import { useAuthStore } from "~/store/auth";
 import { useTypeResultStore } from "~/store/typeResult";
 
-const { setResult } = useTypeResultStore();
+const { me } = storeToRefs(useAuthStore());
+const { isUnsavedResult } = storeToRefs(useTypeResultStore());
+const { setResult, saveResult } = useTypeResultStore();
+const DEFAULT_WORDS_AMOUNT = 4;
 
 const text = ref(
   // "When you meet someone better than yourself, turn your thoughts to becoming his equal. When you meet someone not as good as you are, look within and examine your own self.",
-  generateWords(10),
+  generateWords(DEFAULT_WORDS_AMOUNT),
   // "provide tenn learn",
 );
 const parsedText = ref(
@@ -41,6 +47,9 @@ const parsedText = ref(
   }),
 );
 
+const timer = new Timer();
+const seconds = ref(0);
+const isTimerStarted = ref(false);
 const inputModel = ref("");
 const isFocused = ref(false);
 const inputRef = ref();
@@ -53,7 +62,6 @@ onMounted(() => {
 });
 
 const handleFocus = () => {
-  console.log("focus");
   inputRef.value.focus();
   isFocused.value = true;
 };
@@ -66,11 +74,17 @@ watch(
   () => {
     const str = inputModel.value;
 
+    startTimer();
     checkSpaceAndSetCurrentChar(str);
     updateColorsOfChars(str);
     checkFinish();
   },
 );
+const startTimer = () => {
+  if (isTimerStarted.value) return;
+  timer.startTimer();
+  isTimerStarted.value = true;
+};
 
 const checkSpaceAndSetCurrentChar = (str: string) => {
   /* if white space, go next word */
@@ -116,12 +130,6 @@ const updateColorsOfChars = (str: string) => {
 };
 const checkFinish = () => {
   /* finish */
-  console.log("--word", currentWord.value, parsedText.value.length - 1);
-  console.log(
-    "char",
-    currentChar.value,
-    parsedText.value[currentWord.value].length - 1,
-  );
   if (
     currentWord.value === parsedText.value.length - 1 &&
     currentChar.value === parsedText.value[currentWord.value].length - 1
@@ -129,12 +137,30 @@ const checkFinish = () => {
     handleFinish();
   }
 };
-const handleFinish = () => {
-  setResult({
-    wpm: 100,
-    accuracy: 100,
-    time: 10,
+const countCorrectCharacters = () => {
+  let correct = 0;
+  parsedText.value.forEach((word, index) => {
+    word.forEach((char, index) => {
+      if (char.color === "green") correct++;
+    });
   });
+  return correct;
+};
+const roundToOne = (num: number) => {
+  return Math.round(num * 10) / 10;
+};
+const handleFinish = async () => {
+  const minutes = timer.stopTimer();
+  setResult({
+    wpm: roundToOne(DEFAULT_WORDS_AMOUNT / minutes),
+    accuracy: roundToOne((countCorrectCharacters() / text.value.length) * 100),
+    time: roundToOne(minutes * 60),
+  });
+  if (!me.value) {
+    isUnsavedResult.value = true;
+  } else {
+    await saveResult();
+  }
 };
 </script>
 

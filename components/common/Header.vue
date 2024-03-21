@@ -12,9 +12,7 @@ const logout = () => {
   router.push("/login");
 };
 onMounted(async () => {
-  console.log("calling me");
   await getMe();
-  console.log("me", me.value);
 });
 </script>
 
