@@ -16,7 +16,11 @@
             </div>
             <div iv class="flex flex-col space-y-1.5">
               <UILabel for="password">Password</UILabel>
-              <UIInput id="password" v-model="user.password" />
+              <UIInput
+                id="password"
+                v-model="user.password"
+                html-type="password"
+              />
             </div>
           </div>
           <UIBox class="flex flex-col gap-3 items-center">

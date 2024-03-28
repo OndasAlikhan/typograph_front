@@ -18,7 +18,7 @@ const logout = () => {
     <UIDropdownMenuTrigger as-child>
       <UIButton variant="ghost" class="relative h-8 w-8 rounded-full">
         <UIAvatar class="h-8 w-8">
-          <UIAvatarImage alt="@shadcn" />
+          <UIAvatarImage alt="@" />
           <UIAvatarFallback>{{ me?.name?.[0] }}</UIAvatarFallback>
         </UIAvatar>
       </UIButton>
@@ -35,11 +35,13 @@ const logout = () => {
       <UIDropdownMenuSeparator />
       <UIDropdownMenuGroup>
         <UIDropdownMenuItem @click="navigateTo('/profile')">
-          Profile
+          History
         </UIDropdownMenuItem>
-        <UIDropdownMenuItem> Billing </UIDropdownMenuItem>
-        <UIDropdownMenuItem> Settings </UIDropdownMenuItem>
-        <UIDropdownMenuItem>New Team</UIDropdownMenuItem>
+        <UIDropdownMenuItem>
+          Lobby&nbsp;<span class="text-muted-foreground">(coming soon)</span>
+        </UIDropdownMenuItem>
+        <!-- <UIDropdownMenuItem> Settings </UIDropdownMenuItem>
+        <UIDropdownMenuItem>New Team</UIDropdownMenuItem> -->
       </UIDropdownMenuGroup>
       <UIDropdownMenuSeparator />
       <UIDropdownMenuItem @click="logout"> Log out </UIDropdownMenuItem>
