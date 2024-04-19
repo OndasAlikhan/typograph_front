@@ -8,7 +8,7 @@
     </div>
     <span
       ref="caretRef"
-      class="before:content-[''] min-w-[2px] h-[21px] transition-all bg-black absolute"
+      class="before:content-[''] min-w-[2px] h-[21px] transition-all duration-[125ms] bg-black absolute"
     ></span>
     <p
       v-for="row in props.text"

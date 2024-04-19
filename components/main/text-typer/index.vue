@@ -1,34 +1,46 @@
 <template>
-  <UICard class="font-mono text-xl" @click="handleFocus">
-    <UICardContent class="mt-4" :class="{ 'blur-sm': !isFocused }">
-      <MainTextTyperRenderText
-        ref="renderTextRef"
-        :text="parsedText"
-        :input-model="inputModel"
-        :word-index="currentWord"
-        :is-timer-started="isTimerStarted"
-      />
-      <input
-        ref="inputRef"
-        v-model="inputModel"
-        autofocus
-        class="border h-8 text-black opacity-0 w-full pointer-events-none"
-        @focus="handleFocus"
-        @blur="handleBlur"
-      />
-    </UICardContent>
-  </UICard>
+  <div>
+    <UICard class="font-mono text-xl" @click="handleFocus">
+      <UICardContent class="mt-4" :class="{ 'blur-sm': !isFocused }">
+        <MainTextTyperRenderText
+          ref="renderTextRef"
+          :text="parsedText"
+          :input-model="inputModel"
+          :word-index="currentWord"
+          :is-timer-started="isTimerStarted"
+        />
+        <input
+          ref="inputRef"
+          v-model="inputModel"
+          class="border h-8 text-black opacity-0 w-full pointer-events-none"
+          @focus="handleFocus"
+          @blur="handleBlur"
+        />
+      </UICardContent>
+    </UICard>
+    <UICard class="mt-5 w-[300px]">
+      <UICardContent class="p-4 d-flex flex-col">
+        <p class="mb-2 text-xl">Create a lobby</p>
+        <p class="mb-5 text-sm text-muted-foreground">
+          Create a lobby and invite your friends to compete with you.
+        </p>
+        <UIButton class="w-full" @click="createLobby()">Let's go</UIButton>
+      </UICardContent>
+    </UICard>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { generateWords } from "~/lib/genWord";
 import Timer from "~/lib/timer";
 import { useAuthStore } from "~/store/auth";
+import { useLobbyStore } from "~/store/lobby";
 import { useTypeResultStore } from "~/store/typeResult";
 
 const { me } = storeToRefs(useAuthStore());
 const { isUnsavedResult } = storeToRefs(useTypeResultStore());
 const { setResult, saveResult } = useTypeResultStore();
+const { createLobby } = useLobbyStore();
 const DEFAULT_WORDS_AMOUNT = 20;
 
 const text = ref(
