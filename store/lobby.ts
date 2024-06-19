@@ -5,7 +5,7 @@ export const useLobbyStore = defineStore({
   id: "myLobbyStore",
   state: () => ({}),
   actions: {
-    async createLobby() {
+    async createLobby(name: string) {
       const { apiBase } = useApi();
       const { me } = useAuthStore();
       try {
@@ -13,7 +13,7 @@ export const useLobbyStore = defineStore({
           method: "post",
           body: {
             admin_user_id: me?.id,
-            name: `${me?.name}'s lobby`,
+            name: name,
             users: [me?.id],
           },
         });
@@ -23,6 +23,43 @@ export const useLobbyStore = defineStore({
       } catch (err) {
         console.error("Error creating lobby", err);
       }
+    },
+    async enterLobby(lobby_id: number) {
+      const { apiBase } = useApi();
+      const { me } = useAuthStore();
+      try {
+        const { data }: any = await $fetch(`${apiBase.value}/lobbies/enter`, {
+          method: "post",
+          body: {
+            lobby_id,
+            user_id: me?.id,
+          },
+        });
+        console.log("data", data);
+        data.id;
+      } catch (err) {
+        console.error("Error entering lobby", err);
+      }
+    },
+    async leaveLobby(lobby_id: number) {
+      const { apiBase } = useApi();
+      const { me } = useAuthStore();
+      try {
+        const { data }: any = await $fetch(`${apiBase.value}/lobbies/leave`, {
+          method: "post",
+          body: {
+            lobby_id,
+            user_id: me?.id,
+          },
+        });
+        console.log("data", data);
+        data.id;
+      } catch (err) {
+        console.error("Error leaving lobby", err);
+      }
+    },
+    async startLobby() {
+      console.log("starting");
     },
   },
 });

@@ -2,6 +2,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/store/auth";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  console.log("calling---");
   const { getMe } = useAuthStore();
   const { authenticated, me } = storeToRefs(useAuthStore());
   const token = useCookie("token");
@@ -11,6 +12,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const PUBLIC_PAGES = ["/", "/leaderboard"]; // accessible for everyone
 
   if (token.value && !me.value?.id) {
+    console.log("calling getme in auth.global.ts");
     await getMe();
   }
   // for authenticated users

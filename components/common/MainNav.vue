@@ -12,6 +12,12 @@ import { cn } from "@/lib/utils";
     >
       Leaderboard
     </a>
+    <a
+      href="/lobbies"
+      class="text-sm font-medium transition-colors hover:text-primary"
+    >
+      Lobbies
+    </a>
     <!-- <a
       href="/examples/dashboard"
       class="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"

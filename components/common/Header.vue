@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia"; // import storeToRefs helper hook from pinia
-import { useAuthStore } from "~/store/auth"; // import the auth store we just created
+import { useAuthStore } from "~/store/auth";
+import { useWsStore } from "~/store/ws"; // import the auth store we just created
 
 const router = useRouter();
 
+const { connect } = useWsStore()
 const { logUserOut, getMe } = useAuthStore(); // use authenticateUser action from  auth store
 const { authenticated, me } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
 
@@ -12,6 +14,8 @@ const logout = () => {
   router.push("/login");
 };
 onMounted(async () => {
+  console.log('calling getMe in Header')
+  await connect();
   await getMe();
 });
 </script>

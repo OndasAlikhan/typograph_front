@@ -14,7 +14,7 @@
               <UILabel for="email">Email</UILabel>
               <UIInput id="email" v-model="user.email" />
             </div>
-            <div iv class="flex flex-col space-y-1.5">
+            <div class="flex flex-col space-y-1.5">
               <UILabel for="password">Password</UILabel>
               <UIInput
                 id="password"

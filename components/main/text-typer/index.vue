@@ -24,7 +24,9 @@
         <p class="mb-5 text-sm text-muted-foreground">
           Create a lobby and invite your friends to compete with you.
         </p>
-        <UIButton class="w-full" @click="createLobby()">Let's go</UIButton>
+        <UIButton class="w-full" @click="navigateTo('/lobbies')">
+          Let's go
+        </UIButton>
       </UICardContent>
     </UICard>
   </div>
@@ -40,7 +42,6 @@ import { useTypeResultStore } from "~/store/typeResult";
 const { me } = storeToRefs(useAuthStore());
 const { isUnsavedResult } = storeToRefs(useTypeResultStore());
 const { setResult, saveResult } = useTypeResultStore();
-const { createLobby } = useLobbyStore();
 const DEFAULT_WORDS_AMOUNT = 20;
 
 const text = ref(

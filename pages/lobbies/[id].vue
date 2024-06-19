@@ -1,8 +1,11 @@
 <template>
-  <div>
+  <div class="w-full">
     <h2 class="text-2xl font-bold tracking-tight">{{ data?.data.name }}</h2>
 
-    <LobbyParticipants :participants="data?.data?.users" />
+    <LobbiesParticipants
+      :participants="data?.data?.users"
+      :lobby="data?.data"
+    />
   </div>
 </template>
 
