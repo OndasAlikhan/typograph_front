@@ -18,10 +18,10 @@
       </UITableRow>
     </UITableBody>
   </UITable>
-  <UIButton v-if="alreadyJoined" class="mt-5" disabled aria-disabled>
-    You joined
+  <UIButton v-if="alreadyJoined" class="mt-5" @click="handleLeaveLobby">
+    Leave
   </UIButton>
-  <UIButton v-else class="mt-5" @click="enterLobby(lobby.id)">Join</UIButton>
+  <UIButton v-else class="mt-5" @click="handleEnterLobby">Join</UIButton>
   <UIButton v-if="isAdmin" class="ml-3" @click="startLobby"> Start </UIButton>
 </template>
 <script lang="ts" setup>
@@ -35,9 +35,19 @@ type Props = {
   participants?: User[];
 };
 const props = defineProps<Props>();
+const emit = defineEmits(["refresh"]);
 
 const { me } = useAuthStore();
-const { enterLobby, startLobby } = useLobbyStore();
+const { enterLobby, leaveLobby, startLobby } = useLobbyStore();
+
+async function handleEnterLobby() {
+  await enterLobby(props.lobby.id);
+  emit("refresh");
+}
+async function handleLeaveLobby() {
+  await leaveLobby(props.lobby.id);
+  emit("refresh");
+}
 
 const alreadyJoined = computed(() =>
   props.participants?.find((item) => item.id === me.id),
