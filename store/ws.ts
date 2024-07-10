@@ -1,11 +1,11 @@
-import { wsMessageTypes } from "~/lib/types/ws-types";
+import { wsMessageTypes, type Message } from "~/lib/types/ws-types";
 import { useAuthStore } from "~/store/auth";
 
 export const useWsStore = defineStore({
   id: "wsStore",
-  state: (): { connection: WebSocket; message: any } => ({
-    connection: null,
-    message: null,
+  state: (): { connection?: WebSocket; message?: Message } => ({
+    connection: undefined,
+    message: undefined,
   }),
   actions: {
     async connect() {
@@ -24,33 +24,15 @@ export const useWsStore = defineStore({
         this.connection = socket;
       };
       socket.onmessage = (event) => {
-        console.log("Message from server:", event.data);
-        this.onSocketMessage(event.data);
+        this.onSocketMessage(JSON.parse(event.data));
       };
       socket.onerror = (event) => {
         console.error("WebSocket error:", event);
       };
     },
-    onSocketMessage(message: any) {
+    onSocketMessage(message: Message) {
+      console.log("Message from server:", message);
       this.message = message;
-    },
-    enterRoom(lobbyId: number) {
-      this.connection.send(
-        JSON.stringify({
-          type: wsMessageTypes.ENTER_LOBBY,
-          user_id: me.id,
-          lobby_id: lobbyId,
-        }),
-      );
-    },
-    leaveRoom(lobbyId: number) {
-      this.connection.send(
-        JSON.stringify({
-          type: wsMessageTypes.LEAVE_LOBBY,
-          user_id: me.id,
-          lobby_id: lobbyId,
-        }),
-      );
     },
   },
 });

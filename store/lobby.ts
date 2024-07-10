@@ -28,15 +28,14 @@ export const useLobbyStore = defineStore({
       const { apiBase } = useApi();
       const { me } = useAuthStore();
       try {
-        const { data }: any = await $fetch(`${apiBase.value}/lobbies/enter`, {
+        const resp = await $fetch(`${apiBase.value}/lobbies/enter`, {
           method: "post",
           body: {
             lobby_id,
             user_id: me?.id,
           },
         });
-        console.log("data", data);
-        data.id;
+        console.log("resp", resp);
       } catch (err) {
         console.error("Error entering lobby", err);
       }
@@ -45,15 +44,14 @@ export const useLobbyStore = defineStore({
       const { apiBase } = useApi();
       const { me } = useAuthStore();
       try {
-        const { data }: any = await $fetch(`${apiBase.value}/lobbies/leave`, {
+        const resp = await $fetch(`${apiBase.value}/lobbies/leave`, {
           method: "post",
           body: {
             lobby_id,
             user_id: me?.id,
           },
         });
-        console.log("data", data);
-        data.id;
+        console.log("resp", resp);
       } catch (err) {
         console.error("Error leaving lobby", err);
       }
