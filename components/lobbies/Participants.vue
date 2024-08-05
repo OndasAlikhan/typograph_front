@@ -8,8 +8,8 @@
       </UITableRow>
     </UITableHeader>
     <UITableBody>
-      <UITableRow v-if="!participants"> Invite </UITableRow>
-      <UITableRow v-for="(item, index) in participants" v-else :key="item.id">
+      <UITableRow v-if="!lobby.users"> Invite </UITableRow>
+      <UITableRow v-for="(item, index) in lobby.users" v-else :key="item.id">
         <UITableCell>{{ index + 1 }}</UITableCell>
         <UITableCell>{{ item.name }}</UITableCell>
         <UITableCell class="text-right">
@@ -22,7 +22,9 @@
     Leave
   </UIButton>
   <UIButton v-else class="mt-5" @click="handleEnterLobby">Join</UIButton>
-  <UIButton v-if="isAdmin" class="ml-3" @click="startLobby"> Start </UIButton>
+  <UIButton v-if="isAdmin" class="ml-3" @click="startLobby(lobby.id)">
+    Start
+  </UIButton>
 </template>
 <script lang="ts" setup>
 import type { User } from "~/lib/types/auth-types";
@@ -32,7 +34,6 @@ import type { Lobby } from "~/lib/types/lobby-types";
 
 type Props = {
   lobby: Lobby;
-  participants?: User[];
 };
 const props = defineProps<Props>();
 const emit = defineEmits(["refresh"]);
@@ -50,7 +51,7 @@ async function handleLeaveLobby() {
 }
 
 const alreadyJoined = computed(() =>
-  props.participants?.find((item) => item.id === me.id),
+  props.lobby.users?.find((item) => item.id === me.id),
 );
 const isAdmin = computed(() => props.lobby.admin_user_id === me?.id);
 </script>

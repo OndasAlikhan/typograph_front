@@ -56,8 +56,18 @@ export const useLobbyStore = defineStore({
         console.error("Error leaving lobby", err);
       }
     },
-    async startLobby() {
+    async startLobby(lobby_id: number) {
       console.log("starting");
+      const { apiBase } = useApi();
+      const { me } = useAuthStore();
+      try {
+        const resp = await $fetch(`${apiBase.value}/lobbies/${lobby_id}/start`, {
+          method: "patch",
+        });
+        console.log("resp", resp);
+      } catch (err) {
+        console.error("Error starting lobby", err);
+      }
     },
   },
 });

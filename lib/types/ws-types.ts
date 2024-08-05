@@ -1,4 +1,4 @@
-export const wsMessageTypes = {
+export const wsOutMessageTypes = {
   CONNECTION: "CONNECTION",
   ENTER_LOBBY: "ENTER_LOBBY",
   LEAVE_LOBBY: "LEAVE_LOBBY",
@@ -6,7 +6,8 @@ export const wsMessageTypes = {
 };
 
 export const wsReceiveMessageTypes = {
-  room_update: "room_update",
+  UPDATE_USERS: "update_users",
+  UPDATE_STATUS: "update_status",
 };
 
 export type Message = {
