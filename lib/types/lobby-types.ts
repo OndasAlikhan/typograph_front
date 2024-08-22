@@ -7,4 +7,5 @@ export type Lobby = {
   status: string;
   users: User[];
   races: any[];
+  text: string;
 };

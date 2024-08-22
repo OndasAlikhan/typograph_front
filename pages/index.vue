@@ -1,8 +1,8 @@
 <template>
   <div class="w-full">
     <div class="mx-auto w-fit">
-      <MainTypeResult v-if="result.wpm" />
-      <MainTextTyper v-else />
+      <TyperResult v-if="result.wpm" />
+      <MainPage v-else />
     </div>
   </div>
 </template>

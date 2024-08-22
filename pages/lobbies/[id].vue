@@ -2,12 +2,9 @@
   <div class="w-full">
     <h2 class="text-2xl font-bold tracking-tight">{{ data?.data.name }}</h2>
 
-    <div v-if="data?.data.status === 'running'">
-      <h2>Game started!</h2>
-        <div>
-            <MainTextTyper />
-        </div>
-    </div>
+    <LobbiesGame v-if="data?.data.status === 'running'"
+      :lobby="data?.data"
+    />
     <LobbiesParticipants
       v-else
       :lobby="data?.data"

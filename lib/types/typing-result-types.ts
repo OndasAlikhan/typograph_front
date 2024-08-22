@@ -7,3 +7,8 @@ export type TypingResultResponse = {
   race_id: number;
   created_at: string;
 };
+
+export type Letter = {
+  char: string;
+  color: string;
+};

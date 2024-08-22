@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
+import { generateWords } from "~/lib/genWord";
 
 export const useLobbyStore = defineStore({
   id: "myLobbyStore",
@@ -57,14 +58,15 @@ export const useLobbyStore = defineStore({
       }
     },
     async startLobby(lobby_id: number) {
-      console.log("starting");
       const { apiBase } = useApi();
       const { me } = useAuthStore();
       try {
         const resp = await $fetch(`${apiBase.value}/lobbies/${lobby_id}/start`, {
           method: "patch",
+          body: {
+            text: generateWords(10)
+          }
         });
-        console.log("resp", resp);
       } catch (err) {
         console.error("Error starting lobby", err);
       }

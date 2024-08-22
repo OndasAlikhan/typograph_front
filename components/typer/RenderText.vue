@@ -27,11 +27,8 @@
 </template>
 <script lang="ts" setup>
 import Timer from "~/lib/timer";
+import type { Letter } from "~/lib/types/typing-result-types";
 
-type Letter = {
-  char: string;
-  color: string;
-};
 type ParsedText = Letter[][];
 type Props = {
   text: ParsedText;
