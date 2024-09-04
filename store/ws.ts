@@ -1,4 +1,9 @@
-import { wsOutMessageTypes, wsReceiveMessageTypes, type Message } from "~/lib/types/ws-types";
+import {
+  wsOutMessageTypes,
+  wsReceiveMessageTypes,
+  type Message,
+  type TextMessageOut,
+} from "~/lib/types/ws-types";
 import { useAuthStore } from "~/store/auth";
 
 export const useWsStore = defineStore({
@@ -27,7 +32,7 @@ export const useWsStore = defineStore({
         console.log("event.data", event.data);
         console.log("typeof event.data", typeof event.data);
 
-        let msg = JSON.parse(event.data);
+        const msg = JSON.parse(event.data);
         try {
           console.log("msg", msg);
           console.log("typeof msg", typeof msg);
@@ -40,6 +45,18 @@ export const useWsStore = defineStore({
       socket.onerror = (event) => {
         console.error("WebSocket error:", event);
       };
+    },
+    async sendTextMessage(value: TextMessageOut) {
+      const { me } = useAuthStore();
+
+      this.connection?.send(
+        JSON.stringify({
+          type: wsOutMessageTypes.BROADCAST_IN_ROOM,
+          user_id: me.id,
+          lobby_id: value.lobbyId,
+          text: value.text,
+        }),
+      );
     },
     onSocketMessage(message: Message) {
       this.message = message;

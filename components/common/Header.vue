@@ -5,7 +5,7 @@ import { useWsStore } from "~/store/ws"; // import the auth store we just create
 
 const router = useRouter();
 
-const { connect } = useWsStore()
+const { connect } = useWsStore();
 const { logUserOut, getMe } = useAuthStore(); // use authenticateUser action from  auth store
 const { authenticated, me } = storeToRefs(useAuthStore()); // make authenticated state reactive with storeToRefs
 
@@ -14,7 +14,6 @@ const logout = () => {
   router.push("/login");
 };
 onMounted(async () => {
-  console.log('calling getMe in Header')
   await connect();
   await getMe();
 });
@@ -32,9 +31,9 @@ onMounted(async () => {
           <CommonUserNav />
         </div>
         <div v-else>
-          <UIButton>
-            <NuxtLink to="/login">Sign in</NuxtLink>
-          </UIButton>
+          <NuxtLink to="/login">
+            <UIButton> Sign in </UIButton>
+          </NuxtLink>
         </div>
       </div>
     </div>

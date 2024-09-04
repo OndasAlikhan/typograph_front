@@ -2,15 +2,8 @@
   <div class="w-full">
     <h2 class="text-2xl font-bold tracking-tight">{{ data?.data.name }}</h2>
 
-    <LobbiesGame v-if="data?.data.status === 'running'"
-      :lobby="data?.data"
-    />
-    <LobbiesParticipants
-      v-else
-      :lobby="data?.data"
-      @refresh="refresh"
-    />
-    
+    <LobbiesGame v-if="data?.data.status === 'running'" :lobby="data?.data" />
+    <LobbiesParticipants v-else :lobby="data?.data" @refresh="refresh" />
   </div>
 </template>
 
@@ -29,21 +22,22 @@ const lobbyId = ref(route.params.id);
 const { data, pending, refresh } = await useFatch<SingleResp<Lobby>>(
   `/lobbies/${lobbyId.value}`,
 );
-
-watch(() => message?.value, async() => {
-  switch (message?.value?.type) {
-    case wsReceiveMessageTypes.UPDATE_USERS:
-      await refresh();
-      break;
-    case wsReceiveMessageTypes.UPDATE_STATUS:
-      await refresh();
-      //todo redirect to game
-      break;
-
-  }
-});
-
 console.log("----data", data.value);
+
+watch(
+  () => message?.value,
+  async () => {
+    switch (message?.value?.type) {
+      case wsReceiveMessageTypes.UPDATE_USERS:
+        await refresh();
+        break;
+      case wsReceiveMessageTypes.UPDATE_STATUS:
+        await refresh();
+        //todo redirect to game
+        break;
+    }
+  },
+);
 </script>
 
 <style></style>

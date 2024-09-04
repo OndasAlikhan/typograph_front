@@ -10,19 +10,36 @@
       ref="caretRef"
       class="before:content-[''] min-w-[2px] h-[21px] transition-all duration-[125ms] bg-black absolute"
     ></span> -->
-    <p
-      v-for="row in props.text"
-      :key="row[0].char"
-      ref="textRefs"
-      class="inline-block"
-    >
-      <span
-        v-for="letter in row"
-        :key="letter.char"
-        :style="{ color: letter.color }"
-        >{{ letter.char }}</span
-      >{{ " " }}
-    </p>
+    <template v-if="playerText">
+      <p
+        v-for="row in props.playerText"
+        :key="row[0].char"
+        ref="textRefs"
+        class="inline-block"
+      >
+        <span
+          v-for="letter in row"
+          :key="letter.char"
+          :style="{ color: letter.color }"
+          >{{ letter.char }}</span
+        >{{ " " }}
+      </p>
+    </template>
+    <template v-else>
+      <p
+        v-for="row in parsedText"
+        :key="row[0].char"
+        ref="textRefs"
+        class="inline-block"
+      >
+        <span
+          v-for="letter in row"
+          :key="letter.char"
+          :style="{ color: letter.color }"
+          >{{ letter.char }}</span
+        >{{ " " }}
+      </p>
+    </template>
   </div>
 </template>
 <script lang="ts" setup>
@@ -31,7 +48,8 @@ import type { Letter } from "~/lib/types/typing-result-types";
 
 type ParsedText = Letter[][];
 type Props = {
-  text: ParsedText;
+  text: string;
+  playerText: ParsedText;
   // inputModel: string;
   // wordIndex: number;
   // isTimerStarted: boolean;
@@ -43,6 +61,17 @@ const parentRef = ref<HTMLElement>();
 const textRefs = ref<HTMLParagraphElement[]>([]);
 const caretRef = ref<HTMLElement>();
 const secondsElapsed = ref(0);
+
+const parsedText = ref(
+  props.text.split(" ").map((word) => {
+    return word.split("").map((char) => {
+      return {
+        char,
+        color: "black",
+      };
+    });
+  }),
+);
 
 // watch(
 //   () => props.isTimerStarted,
