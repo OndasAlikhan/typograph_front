@@ -1,17 +1,30 @@
 <template>
   <div>
-    <h1>Game</h1>
+    <p class="text-lg mt-2">The game started!</p>
     <Typer
+      class="mt-5"
       :text="props.lobby.text"
       @update:parsed-text="handleUpdateParsedText"
       @finish="handleFinish"
     />
-    <TyperPlain
-      v-for="player in playersComputed"
-      :key="player.id"
-      :text="props.lobby.text"
-      :player-text="player.text"
-    />
+    <div class="grid grid-cols-2 gap-2">
+      <UICard v-for="player in playersComputed" :key="player.id" class="mt-5">
+        <UICardContent>
+          <div class="flex mt-4 mb-5 gap-2 items-baseline">
+            <p class="text-2xl">{{ player.name }}</p>
+            <div
+              v-if="isPlayerFinished(player.id)"
+              class="text-muted-foreground"
+            >
+              done
+            </div>
+            <div v-else class="text-muted-foreground">typing...</div>
+          </div>
+
+          <TyperPlain :text="props.lobby.text" :player-text="player.text" />
+        </UICardContent>
+      </UICard>
+    </div>
   </div>
 </template>
 
@@ -39,22 +52,32 @@ const players = ref(
     }, {} as any),
 );
 
+const playersDone = ref<Record<number, boolean>>({});
+
 const playersComputed = computed(() => {
   return Object.values(players.value);
 });
 
+function isPlayerFinished(id: number) {
+  return !!playersDone.value?.[id];
+}
+
 watch(
   () => message?.value,
-  async () => {
+  () => {
     switch (message?.value?.type) {
       case wsReceiveMessageTypes.UPDATE_TEXT:
-        console.log("message from ws:", message.value.data.texts);
+        console.log("message from ws:", message.value.data);
 
         for (const userId in message.value.data.texts) {
           if (players.value?.[userId]) {
             players.value[userId].text = message.value.data.texts[userId];
           }
         }
+        break;
+      case wsReceiveMessageTypes.FINISH:
+        playersDone.value = message.value.data.users_done;
+        console.log("playersDone.value", playersDone.value);
         break;
     }
   },
@@ -69,6 +92,9 @@ const handleUpdateParsedText = (parsedText: Letter[][]) => {
 
 const handleFinish = () => {
   console.log("finish");
+  wsStore.sendFinishMessage({
+    lobbyId: props.lobby.id,
+  });
 };
 </script>
 <style scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="parentRef"
-    class="whitespace-pre-wrap text-xl w-full max-w-[800px] overflow relative"
+    class="whitespace-pre-wrap text-xl w-full max-w-[800px] overflow relative font-mono"
   >
     <!-- <div v-if="props.isTimerStarted" class="absolute -top-7 text-base bg-white">
       {{ timer.secondsToHms(secondsElapsed) }}

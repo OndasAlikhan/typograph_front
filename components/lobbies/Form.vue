@@ -15,7 +15,7 @@
           </div>
           <UIBox class="flex flex-col gap-3 items-center">
             <UIBox class="w-full">
-              <UIButton class="w-full" :loading="loading"> Submit </UIButton>
+              <UIButton class="w-full" :loading="loading"> Create </UIButton>
             </UIBox>
           </UIBox>
         </form>

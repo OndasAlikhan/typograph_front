@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <h2 class="text-2xl font-bold tracking-tight">{{ data?.data.name }}</h2>
+    <h2 class="text-3xl font-bold tracking-tight">{{ data?.data.name }}</h2>
 
     <LobbiesGame v-if="data?.data.status === 'running'" :lobby="data?.data" />
     <LobbiesParticipants v-else :lobby="data?.data" @refresh="refresh" />

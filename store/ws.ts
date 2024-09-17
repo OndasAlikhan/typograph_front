@@ -1,8 +1,8 @@
 import {
   wsOutMessageTypes,
-  wsReceiveMessageTypes,
   type Message,
   type TextMessageOut,
+  type FinishMessageOut,
 } from "~/lib/types/ws-types";
 import { useAuthStore } from "~/store/auth";
 
@@ -51,10 +51,21 @@ export const useWsStore = defineStore({
 
       this.connection?.send(
         JSON.stringify({
-          type: wsOutMessageTypes.BROADCAST_IN_ROOM,
+          type: wsOutMessageTypes.UPDATE_TEXT,
           user_id: me.id,
           lobby_id: value.lobbyId,
           text: value.text,
+        }),
+      );
+    },
+    async sendFinishMessage(value: FinishMessageOut) {
+      const { me } = useAuthStore();
+
+      this.connection?.send(
+        JSON.stringify({
+          type: wsOutMessageTypes.FINISH,
+          user_id: me.id,
+          lobby_id: value.lobbyId,
         }),
       );
     },
